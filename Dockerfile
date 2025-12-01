@@ -1,7 +1,4 @@
-# Docker file for demo purposes
-
-# Alpine - so download is fast
-FROM maven:3.8.6-jdk-8
+FROM maven:3.8.6-jdk-8 AS builder
 
 WORKDIR /lavagna
 COPY ./project/pom.xml .
@@ -16,9 +13,10 @@ RUN apt-get update && \
 
 RUN mvn -B clean package -DskipTests
 
-EXPOSE 8080
-
-COPY entry-point.sh /lavagna/entry-point.sh
+FROM eclipse-temurin:8-jre-alpine
+WORKDIR /lavagna
+COPY --from=builder /lavagna/target/lavagna-*.war /lavagna/lavagna.war
+COPY  entry-point.sh /lavagna/entry-point.sh
 RUN chmod +x /lavagna/entry-point.sh
-
+EXPOSE 8080
 ENTRYPOINT ["/lavagna/entry-point.sh"]

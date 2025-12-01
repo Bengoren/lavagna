@@ -14,5 +14,4 @@ exec java \
   -Ddatasource.username="${DB_USER}" \
   -Ddatasource.password="${DB_PASS}" \
   -Dspring.profiles.active="${SPRING_PROFILE}" \
-  -jar /lavagna/target/lavagna-jetty-console.war --headless
-
+  -jar /lavagna/lavagna.war
