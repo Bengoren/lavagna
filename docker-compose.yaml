@@ -5,6 +5,9 @@ services:
       - mysql
     env_file:
       - project/.env
+    networks:
+      - frontend
+      - backend 
 
   nginx:
     image: nginx:alpine
@@ -12,12 +15,14 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./project/src/main/webapp:/usr/share/nginx/html
-      - ./project/target/lavagna/help:/usr/share/nginx/help 
+      - ./project/target/lavagna/help:/usr/share/nginx/help
     ports:
       - "80:80"
       - "8081:8081"
     depends_on:
       - webapp
+    networks:
+      - frontend 
 
   mysql:
     image: mysql:5.7
@@ -30,6 +35,14 @@ services:
       - mysql-data:/var/lib/mysql
     ports:
       - "3306:3306"
+    networks:
+      - backend 
 
 volumes:
   mysql-data:
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
