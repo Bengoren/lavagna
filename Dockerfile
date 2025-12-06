@@ -11,11 +11,12 @@ RUN apt-get update && \
     apt-get install -y ca-certificates openssl netcat && \
     update-ca-certificates
 
-RUN mvn -B clean package -DskipTests
+RUN mvn -B clean package stampo:build -DskipTests
 
 FROM eclipse-temurin:8-jre-alpine
 WORKDIR /lavagna
 COPY --from=builder /lavagna/target/lavagna-*.war /lavagna/lavagna.war
+COPY --from=builder /lavagna/target/lavagna/help /lavagna/help
 COPY  entry-point.sh /lavagna/entry-point.sh
 RUN chmod +x /lavagna/entry-point.sh
 EXPOSE 8080
