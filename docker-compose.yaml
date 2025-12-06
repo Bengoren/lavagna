@@ -1,13 +1,10 @@
 services:
   webapp:
     image: 167918485905.dkr.ecr.ap-south-1.amazonaws.com/lavagna:${TAG}
-    depends_on:
-      - mysql
     env_file:
       - project/.env
     networks:
       - frontend
-      - backend
 
   nginx:
     image: nginx:alpine
@@ -24,24 +21,6 @@ services:
     networks:
       - frontend
 
-  mysql:
-    image: mysql:5.7
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: lavagna
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-    volumes:
-      - mysql-data:/var/lib/mysql
-    networks:
-      - backend
-
-volumes:
-  mysql-data:
-
-
 networks:
   frontend:
-    driver: bridge
-  backend:
     driver: bridge

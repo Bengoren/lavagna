@@ -31,6 +31,7 @@ ssh -i "${EC2_KEY}" ${EC2_HOST} "
   tar -xzvf ${PACKAGE_TAR}
   cd ${PACKAGE_DIR}
   ls -la nginx/
+  
   chmod +x startup.sh
   APP_TAG=${VERSION} ./startup.sh
 "
